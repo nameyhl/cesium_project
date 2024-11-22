@@ -117,7 +117,7 @@ export const updateData = (db, storeName, data) => {
 
 //删除数据
 export const deleteData = (db, storeName, id) => {
-    let request = db.transaction([storeName], 'readwrite').objectStoreNames(storeName).delete(id)
+    let request = db.transaction([storeName], 'readwrite').objectStore(storeName).delete(id)
     return new Promise((resolve, reject) => {
         request.onsuccess = (event) => {
             resolve(event)
