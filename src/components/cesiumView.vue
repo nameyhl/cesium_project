@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="cesiumView" style="width: 800px;"></div>
+  <div id="cesiumView" style="width: 1200px;"></div>
 </template>
 
 <style>

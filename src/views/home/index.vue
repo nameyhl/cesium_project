@@ -1,10 +1,13 @@
 <script setup>
 </script>
 <template>
-    <div>
+    <div style="display: flex;">
         <div class="home">home</div>
         <div class="body">
-            <routerView></routerView>
+            <div>
+                <routerView></routerView>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -15,8 +18,7 @@
     background: red;;
 }
 .body{
-    width: 800px;
-    height: 1000px;
+    width: 1200px;
     background: blue;
 };
 </style>
