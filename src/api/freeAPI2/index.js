@@ -1,8 +1,8 @@
 import request from "@/utils/request2";
 
-export const showWeChat = (data) => {
+export const myAI = (data) => {
     return request({
-        url: 'api/tx/pyqwenan',
+        url: 'https://spark-api-open.xf-yun.com/v1/chat/completions',
         method: 'get',
         params: data
     })

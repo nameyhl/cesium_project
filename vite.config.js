@@ -16,10 +16,10 @@ export default defineConfig({
     open: false,
   },
   Proxy: {
-    '/api': {
-        target: 'https://apis.whyta.cn/',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      },
+    // '/api': {
+    //     target: 'https://apis.whyta.cn/',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, '')
+    //   },
   },
 });

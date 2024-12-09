@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { getData, getImg } from '@/api/freeApi1/index.js';
-import { showWeChat } from '@/api/freeAPI2';
+// import { MyAI } from '@/api/freeAPI2';
 
 const freeAPI2Key = 'f922bcb04085'
 
@@ -9,24 +9,18 @@ let titleText = ref('');
 let fontFrom = ref('');
 let fontCreater = ref('');
 let imgUrl = ref('');
+let question = ref('');
 
-// getData().then(res => {
-//     console.log(res);
-//     titleText.value = res.data.content;
-//     fontFrom.value = res.data.form;
-//     fontCreater.value = res.data.creator;
-// })
-
-// getImg().then(res => {
-//     console.log(res);
-//     imgUrl.value = res.url;
-// })
-
-showWeChat({
-    key:freeAPI2Key,
-}).then(res => {
+getData().then(res => {
     console.log(res);
-    
+    titleText.value = res.data.content;
+    fontFrom.value = res.data.form;
+    fontCreater.value = res.data.creator;
+})
+
+getImg().then(res => {
+    console.log(res);
+    imgUrl.value = res.url;
 })
 
 </script>
@@ -37,7 +31,31 @@ showWeChat({
             <div class="font">{{ titleText }}</div>
             <div class="fromAndCreater">--{{ fontCreater }} 《{{ fontFrom }}》</div>
         </div>
-        <img :src="imgUrl" width="300" alt="">
+        <el-row style="margin: 0 10px;" :gutter="12">
+            <el-col :span="6">
+                <div class="imgBox">
+                    <img :src="imgUrl" width="100%" height="460px" alt="">
+                </div>
+
+            </el-col>
+            <el-col :span="18">
+                <div class="AIBox">
+                    <div class="AITitle">You can try saying a sentence</div>
+                    <div class="AIBody">
+                        <div class="anwser"></div>
+                        <div class="question">
+                            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入内容"
+                                v-model="question">
+                            </el-input>
+                            <div class="submit">
+                            <el-button type="primary">发送</el-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+
     </div>
 </template>
 
@@ -46,26 +64,75 @@ showWeChat({
 .common-layout {
     width: 1200px;
     margin: 0 auto;
+    background-color: #f0f0f0;
+
     .title {
         background-color: #ecf5ff;
-        .tag{
+        margin: 0 10px;
+
+        .tag {
             width: 100%;
             height: 5px;
             background-color: #409eff;
         }
+
         .font {
             font-size: 20px;
             font-weight: 500;
             text-align: center;
-            margin-top: 5px;
+            // margin-top: 5px;
         }
-        .fromAndCreater{
+
+        .fromAndCreater {
             text-align: right;
             font-size: 12px;
             font-style: italic;
         }
     }
 
-    ;
+    .imgBox {
+        width: 100%;
+        height: 460px;
+        border: #409eff solid 1px;
+    }
+
+    .AIBox {
+        width: 100%;
+        height: 470px;
+
+        .AITitle {
+            background-color: #409eff;
+            // padding: 10px;
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 500;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .AIBody {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background-color: #fff;
+            margin: 10px 0;
+            .question{
+                position: absolute;
+                bottom: 10px;
+                left: 125px;
+                width: 600px;
+            }
+            .submit{
+                position: absolute;
+                top: 10px;
+                right: 5px
+            }
+        }
+
+    }
+
 }
 </style>
