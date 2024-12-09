@@ -3,16 +3,31 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
   {
-    name: 'home',
+    name: '',
     path: '/',
-    component: () => import('@/views/home/index.vue'),
+    component: () => import('../home.vue'),
     children: [
       {
         name: 'earth',
         path: '/earth',
-        component: () => import('@/views/earth/index.vue'),
+        component: () => import('@/components/cesiumView.vue'),
       },
-    ],
+      {
+        name: 'home',
+        path: '/home',
+        component: () => import('@/views/home/index.vue'),
+      },
+      {
+        name: 'test',
+        path: '/test',
+        component: () => import('@/views/test/index.vue'),
+      }, 
+      {
+        name: 'threeJS',
+        path: '/threeJS',
+        component: () => import('@/views/threeJS/index.vue'),
+      },
+    ],  
   },
   {
     name: 'login',
@@ -24,6 +39,7 @@ const routes = [
     path: '/registry',
     component: () => import('@/views/registry/index.vue'),
   },
+ 
 ];
 
 const router = createRouter({
