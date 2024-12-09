@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { getData, getImg } from '@/api/freeApi1/index.js';
-// import { MyAI } from '@/api/freeAPI2';
+import { myAI } from '@/api/freeAPI2';
 
 const freeAPI2Key = 'f922bcb04085'
 
@@ -22,6 +22,24 @@ getImg().then(res => {
     console.log(res);
     imgUrl.value = res.url;
 })
+const getAnswer = () => {
+    let obj = {
+        model: "lite",
+        user: "用户唯一id",
+        messages: [
+            {
+                role: "system",
+                content: "你是知识渊博的助理"
+            },
+            {
+                role: "user",
+                content: "你好，讯飞星火"
+            }
+        ],
+    }
+    myAI(obj).then(res => {
+    })
+}
 
 </script>
 <template>
@@ -48,7 +66,7 @@ getImg().then(res => {
                                 v-model="question">
                             </el-input>
                             <div class="submit">
-                            <el-button type="primary">发送</el-button>
+                                <el-button type="primary" @click="getAnswer">发送</el-button>
                             </div>
                         </div>
                     </div>
@@ -119,13 +137,15 @@ getImg().then(res => {
             height: 400px;
             background-color: #fff;
             margin: 10px 0;
-            .question{
+
+            .question {
                 position: absolute;
                 bottom: 10px;
                 left: 125px;
                 width: 600px;
             }
-            .submit{
+
+            .submit {
                 position: absolute;
                 top: 10px;
                 right: 5px
