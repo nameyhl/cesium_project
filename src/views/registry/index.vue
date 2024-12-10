@@ -21,8 +21,8 @@ let form = reactive({
 //注册用户函数
 const registry = async () => {
   let openData = await indexedDB.openDB(DBName, storeName);
+  console.log(openData);
   let data = {
-    id: 4,
     name: form.name,
     userName: form.userName,
     psw: form.psw,
