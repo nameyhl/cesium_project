@@ -8,11 +8,12 @@ const router = useRouter();
 
 
 let form = reactive({
-  userName: '',
-  psw: '',
+  username: '',
+  password: '',
 });
 const loginWeb = async () => {
-  await login(form).then((res) => {
+  let data = JSON.stringify(form)
+  await login(form).then((data) => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
       localStorage.setItem('token', res.data.token);
@@ -31,11 +32,11 @@ const loginWeb = async () => {
       <div class="form">
         <el-form :model="form" label-width="80px">
           <el-form-item label="用户名：">
-            <el-input v-model="form.userName" placeholder="请输入用户名" />
+            <el-input v-model="form.username" placeholder="请输入用户名" />
           </el-form-item>
           <el-form-item label="密码：">
             <el-input
-              v-model="form.psw"
+              v-model="form.password"
               type="password"
               placeholder="请输入密码"
             ></el-input>
