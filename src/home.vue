@@ -28,7 +28,7 @@ const goTo = (key) => {
                     <el-menu-item v-for="item in menuTag" :index="item.index" @click="goTo(item.index)">{{ item.name }}</el-menu-item>
                 </el-menu>
             </el-header>
-            <el-main>
+            <el-main style="background-color: #f0f0f0;">
                 <routerView></routerView>
             </el-main>
         </el-container>

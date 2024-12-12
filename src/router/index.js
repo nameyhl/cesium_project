@@ -27,6 +27,11 @@ const routes = [
         path: '/threeJS',
         component: () => import('@/views/threeJS/index.vue'),
       },
+      {
+        name: 'about',
+        path: '/about',
+        component: () => import('@/views/about/index.vue'),
+      }, 
     ],  
   },
   {

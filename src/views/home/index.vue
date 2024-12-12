@@ -82,7 +82,7 @@ const getAnswer = () => {
 .common-layout {
     width: 1200px;
     margin: 0 auto;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 
     .title {
         background-color: #ecf5ff;

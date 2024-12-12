@@ -1,51 +1,28 @@
 <script setup>
-import indexDB from '@/indexDb/userTable/index.js';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
+import { login } from '../../api/user';
+
 const router = useRouter();
 
-//数据库名字，表名，查询条件
-let DBName = 'myDB',
-  storeName = 'userDB',
-  indexName,
-  key;
 
 let form = reactive({
   userName: '',
   psw: '',
 });
+const loginWeb = async () => {
+  await login(form).then((res) => {
+    if (res.code == 200) {
+      ElMessage.success('登录成功');
+      localStorage.setItem('token', res.data.token);
+      router.push('/');
+    } else {
+      ElMessage.error(res.msg);
+    }
+  });
+}
 
-const routerTo = (path) => {
-  router.push(path);
-};
-
-const login = async () => {
-  let db = await indexDB.openDB(DBName, storeName, 1);
-
-  indexName = 'userNameIndex';
-  key = form.userName;
-
-  let data = await indexDB
-    .getDataByIndex(db, storeName, indexName, key)
-    .then((res) => {
-      if (res) {
-        if (res.psw === form.psw) {
-          router.push('/');
-        } else {
-          ElMessage({
-            message: '密码错误',
-            type: 'error',
-          });
-        }
-      } else {
-        ElMessage({
-          message: '用户名不存在',
-          type: 'error',
-        });
-      }
-    });
-};
 </script>
 <template>
   <div class="body">
@@ -67,7 +44,7 @@ const login = async () => {
             <div style="">
               <el-button
                 type="primary"
-                @click="login"
+                @click="loginWeb"
                 style="width: 100px; margin: 10px 0"
                 >登录</el-button
               >
