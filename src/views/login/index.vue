@@ -6,6 +6,9 @@ import { login } from '../../api/user';
 
 const router = useRouter();
 
+const routerTo = () => {
+  router.push('/registry');
+};
 
 let form = reactive({
   username: '',
@@ -13,10 +16,9 @@ let form = reactive({
 });
 const loginWeb = async () => {
   let data = JSON.stringify(form)
-  await login(form).then((data) => {
+  await login(form).then((res) => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
-      localStorage.setItem('token', res.data.token);
       router.push('/');
     } else {
       ElMessage.error(res.msg);

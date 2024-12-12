@@ -1,45 +1,11 @@
 <script setup>
 import { ref } from 'vue'
-import { getData, getImg } from '@/api/freeApi1/index.js';
-import { myAI } from '@/api/freeAPI2';
-
-const freeAPI2Key = 'f922bcb04085'
 
 let titleText = ref('');
 let fontFrom = ref('');
 let fontCreater = ref('');
 let imgUrl = ref('');
 let question = ref('');
-
-getData().then(res => {
-    console.log(res);
-    titleText.value = res.data.content;
-    fontFrom.value = res.data.form;
-    fontCreater.value = res.data.creator;
-})
-
-getImg().then(res => {
-    console.log(res);
-    imgUrl.value = res.url;
-})
-const getAnswer = () => {
-    let obj = {
-        model: "lite",
-        user: "用户唯一id",
-        messages: [
-            {
-                role: "system",
-                content: "你是知识渊博的助理"
-            },
-            {
-                role: "user",
-                content: "你好，讯飞星火"
-            }
-        ],
-    }
-    myAI(obj).then(res => {
-    })
-}
 
 </script>
 <template>

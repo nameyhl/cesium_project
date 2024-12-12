@@ -21,7 +21,7 @@ const routes = [
         name: 'test',
         path: '/test',
         component: () => import('@/views/test/index.vue'),
-      }, 
+      },
       {
         name: 'threeJS',
         path: '/threeJS',
@@ -31,8 +31,8 @@ const routes = [
         name: 'about',
         path: '/about',
         component: () => import('@/views/about/index.vue'),
-      }, 
-    ],  
+      },
+    ],
   },
   {
     name: 'login',
@@ -44,7 +44,7 @@ const routes = [
     path: '/registry',
     component: () => import('@/views/registry/index.vue'),
   },
- 
+
 ];
 
 const router = createRouter({
