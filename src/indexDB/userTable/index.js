@@ -30,19 +30,33 @@ export const openDB = (dbName, storeName, version = 1) => {
 //新增数据
 export const addData = (db, storeName, data) => {
   return new Promise((resolve, reject) => {
-    let request = db
-      .transaction([storeName], 'readwrite') //事务对象  指定表格名称和操模式
-      .objectStore(storeName) //仓库对象
-      .add(data); //添加数据
+    let count;
+    const storeLength = db
+      .transaction([storeName], 'readwrite')
+      .objectStore(storeName)
+      .count();
+    storeLength.onsuccess = (event) => {
+      count = event.target.result;
+      let params = {
+        id: count + 1,
+        ...data,
+      };
+      console.log(params);
 
-    //添加成功
-    request.onsuccess = (event) => {
-      resolve(event);
-    };
+      let request = db
+        .transaction([storeName], 'readwrite') //事务对象  指定表格名称和操模式
+        .objectStore(storeName) //仓库对象
+        .add(params); //添加数据
 
-    //添加失败
-    request.onerror = (event) => {
-      throw new Error(event.target.error);
+      //添加成功
+      request.onsuccess = (event) => {
+        resolve(event);
+      };
+
+      //添加失败
+      request.onerror = (event) => {
+        throw new Error(event.target.error);
+      };
     };
   });
 };
