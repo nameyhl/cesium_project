@@ -7,6 +7,47 @@ let fontCreater = ref('');
 let imgUrl = ref('');
 let question = ref('');
 
+// 建立websocket连接 链接地址为讯飞心火认知平台
+const ws = new WebSocket('wss://spark-api.xf-yun.com/v1.1/chat');
+
+// 连接
+ws.onopen = () => {
+  console.log('连接成功');
+}
+
+// 发送数据
+const sendMesg = () => {
+    ws.send(JSON.stringify({
+        "text": question.value
+    }))
+    question.value = ''
+}
+
+//获取数据
+ws.onmessage = (e) => {
+    console.log(e.data)
+    let data = JSON.parse(e.data)
+    if (data.text) {
+        question.value = data.text
+    } else {
+        question.value = data.answer
+    }  
+}
+
+//关闭连接
+ws.onclose = () => {
+    console.log('连接关闭');
+}
+
+// 发生错误
+ws.onerror = () => {
+    console.log('连接错误');
+}
+
+
+
+// 发送消息
+
 </script>
 <template>
     <div class="common-layout">

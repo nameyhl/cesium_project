@@ -83,19 +83,22 @@
 <script setup>
 import { reactive, ref } from 'vue';
 
+// 引入userStore
+import { userMainStore } from '../../store/userStore';
+
+const user = userMainStore().getUser;
+console.log(user);
+
 // 向客户端发送的消息（号主发送的消息）
 let meg = ref('');
 // 用户信息
-const user = {
-    userName : 'xiaoming',
-    age : 15
-}
+
 // 客户端发送的消息
 let msgArr = reactive([]);
 // 消息盒子
 const messageBox = ref('');
 //建立websocket连接
-let ws = new WebSocket('ws://localhost:3000');
+let ws = new WebSocket('ws://localhost:8088');
 
 ws.onopen = () => {
     console.log('连接成功');
@@ -103,7 +106,7 @@ ws.onopen = () => {
 // 连接成功
 const sendMeg = () => {
     let sendData = {
-        userName: 'xiaoming',
+        userName: user.userName,
         text: meg.value
     }
     meg.value = ''

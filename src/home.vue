@@ -7,7 +7,7 @@ const menuTag = reactive([
     { name: '首页', index: '/home' },
     { name: '地图', index: '/earth' },
     { name: '数据', index: '/info' },
-    { name: '分析', index: '/about' },
+    { name: '聊天', index: '/about' },
     { name: '工具', index: '/test' },
     { name: '帮助', index: '/help' },
 ])

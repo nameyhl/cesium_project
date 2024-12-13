@@ -4,6 +4,9 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { login } from '../../api/user';
 
+// 引入userStore
+import { userMainStore } from '../../store/userStore';
+
 const router = useRouter();
 
 const routerTo = () => {
@@ -15,11 +18,14 @@ let form = reactive({
   password: '',
 });
 const loginWeb = async () => {
-  let data = JSON.stringify(form)
   await login(form).then((res) => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
-      router.push('/');
+      console.log(res.result)
+
+      userMainStore().setUser(res.result)  
+      console.log(userMainStore().getUser);
+      router.push('/home');
     } else {
       ElMessage.error(res.msg);
     }
