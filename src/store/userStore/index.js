@@ -1,11 +1,33 @@
-import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { defineStore } from 'pinia'
 
-export const useUserStore = defineStore("user", () => {
-    const user = reactive("");
-   
-    const setUser = (user) => {
-        user.user = user;
+const useUserInfoStore = defineStore("userInfo", () => {
+    const token = ref("")
+    const setToken = (token) => {
+        token.value = token
     }
-    return { user, setUser };
+    const removeToken = () => {
+        token.value = ""
+    }
+
+    const username = ref("")
+
+    const setUsername = (username) => {
+        username.value = username
+    }
+
+    const removeUserName = () => {
+        username.value = ""
+    }
+
+    return {
+        token,
+        setToken,
+        removeToken,
+        username,
+        setUsername,
+        removeUserName
+    }
+
 })
+
+export default useUserInfoStore

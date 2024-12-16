@@ -5,8 +5,8 @@ import { ElMessage } from 'element-plus';
 import { login } from '../../api/user';
 
 // 引入userStore
-import { useUserStore } from '../../store/store';
-const userStore = useUserStore();
+import { useUserInfoStore } from '../../store/userStore/index'
+const userStore = useUserInfoStore();
 
 const router = useRouter();
 
@@ -24,18 +24,20 @@ const loginWeb = async () => {
       ElMessage.success('登录成功');
       console.log(res.data);
       let user = res.data;
-      userStore.setUser(user);
       // 本地存储用户信息
       localStorage.setItem("token", user.token);
       localStorage.setItem("username", user.userName);
       localStorage.setItem("userId", user.id);
       // localStorage.setItem("role", user.role);
       console.log(user);
-      
       // pinia存储用户信息
-      userStore.setUser(user);
+      console.log(userStore);
+
+      userStore.setToken(user.token);
+      userStore.setUserName(user.userName);
+      // userStore.setRole(user.role);
       // 跳转首页
-      router.push('/home');
+      // router.push('/home');
     } else {
       ElMessage.error(res.msg);
     }
@@ -53,20 +55,11 @@ const loginWeb = async () => {
             <el-input v-model="form.username" placeholder="请输入用户名" />
           </el-form-item>
           <el-form-item label="密码：">
-            <el-input
-              v-model="form.password"
-              type="password"
-              placeholder="请输入密码"
-            ></el-input>
+            <el-input v-model="form.password" type="password" placeholder="请输入密码"></el-input>
           </el-form-item>
           <el-form-item>
             <div style="">
-              <el-button
-                type="primary"
-                @click="loginWeb"
-                style="width: 100px; margin: 10px 0"
-                >登录</el-button
-              >
+              <el-button type="primary" @click="loginWeb" style="width: 100px; margin: 10px 0">登录</el-button>
             </div>
           </el-form-item>
           <div style="text-align: center; margin: 20px 0">
@@ -86,22 +79,26 @@ const loginWeb = async () => {
   align-items: center;
   background-image: url('@/assets/bg.png');
   background-size: 100% 100%;
+
   .formBody {
     width: 300px;
     height: 300px;
     margin: 0 auto;
     background-color: white;
+
     .formTitle {
       text-align: center;
       font-size: 30px;
       font-weight: 900;
       margin: 10px 0 30px 0;
     }
+
     .form {
       width: 250px;
       margin: 0 auto;
     }
   }
+
   .el-form-item {
     display: flex;
   }
