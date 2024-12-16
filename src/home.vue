@@ -3,6 +3,11 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+// 引入userStore
+
+
+const username = localStorage.getItem("username")
+
 const menuTag = reactive([
     { name: '首页', index: '/home' },
     { name: '地图', index: '/earth' },
@@ -23,9 +28,14 @@ const goTo = (key) => {
     <div class="common-layout">
         <el-container>
             <el-header>
-                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false"
-                    >
-                    <el-menu-item v-for="item in menuTag" :index="item.index" @click="goTo(item.index)">{{ item.name }}</el-menu-item>
+                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
+                    <el-menu-item v-for="item in menuTag" :index="item.index" @click="goTo(item.index)">{{ item.name
+                        }}</el-menu-item>
+                    <el-sub-menu style="float: right;">
+                        <template #title>{{ username }}</template>
+                        <el-menu-item>个人中心</el-menu-item>
+                        <el-menu-item>退出登录</el-menu-item>
+                    </el-sub-menu>
                 </el-menu>
             </el-header>
             <el-main style="background-color: #f0f0f0;">
@@ -43,8 +53,11 @@ const goTo = (key) => {
 }
 
 .el-main {
-    margin: 10px 0 0 0 ;
+    margin: 10px 0 0 0;
     padding: 0;
     width: 100%;
+}
+.el-menu--horizontal > .el-menu-item:nth-child(6) {
+  margin-right: auto;
 }
 </style>

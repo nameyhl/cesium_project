@@ -5,7 +5,8 @@ import { ElMessage } from 'element-plus';
 import { login } from '../../api/user';
 
 // 引入userStore
-import { userMainStore } from '../../store/userStore';
+import { useUserStore } from '../../store/store';
+const userStore = useUserStore();
 
 const router = useRouter();
 
@@ -21,10 +22,19 @@ const loginWeb = async () => {
   await login(form).then((res) => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
-      console.log(res.result)
-
-      userMainStore().setUser(res.result)  
-      console.log(userMainStore().getUser);
+      console.log(res.data);
+      let user = res.data;
+      userStore.setUser(user);
+      // 本地存储用户信息
+      localStorage.setItem("token", user.token);
+      localStorage.setItem("username", user.userName);
+      localStorage.setItem("userId", user.id);
+      // localStorage.setItem("role", user.role);
+      console.log(user);
+      
+      // pinia存储用户信息
+      userStore.setUser(user);
+      // 跳转首页
       router.push('/home');
     } else {
       ElMessage.error(res.msg);

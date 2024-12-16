@@ -83,16 +83,15 @@
 <script setup>
 import { reactive, ref } from 'vue';
 
-// 引入userStore
-import { userMainStore } from '../../store/userStore';
 
-const user = userMainStore().getUser;
-console.log(user);
 
 // 向客户端发送的消息（号主发送的消息）
 let meg = ref('');
 // 用户信息
-
+const user = {
+    userName: localStorage.getItem('username'),
+    token: localStorage.getItem('token')
+}
 // 客户端发送的消息
 let msgArr = reactive([]);
 // 消息盒子
@@ -114,8 +113,8 @@ const sendMeg = () => {
 }
 
 
-ws.onmessage = (e) => {
-    let data = JSON.parse(e.data)
+ws.onmessage = (val) => {
+    let data = JSON.parse(val.data)
     msgArr.push(data)
     console.log(msgArr);
     
@@ -130,6 +129,10 @@ ws.onclose = () => {
 ws.onerror = (e) => {
     console.log('连接错误', e);
 }
+
+
+console.log(getNow.toLocaleString(), getBefore.toLocaleString());
+
 
 
 </script>
