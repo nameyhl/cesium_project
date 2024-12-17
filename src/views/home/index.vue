@@ -1,11 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 
+// 引入xfAPI方法
+import { initUrl } from '../../utils/xfaiAPI'
+
 let titleText = ref('无人扶我青云志，我自踏雪至山巅');
 let fontFrom = ref('青云志');
 let fontCreater = ref('徐霞客');
 let imgUrl = ref('');
 let question = ref('');
+
+
 
 </script>
 <template>
@@ -32,7 +37,7 @@ let question = ref('');
                                 v-model="question">
                             </el-input>
                             <div class="submit">
-                                <el-button type="primary" @click="sendMesg">发送</el-button>
+                                <el-button type="primary" @click="initUrl">发送</el-button>
                             </div>
                         </div>
                     </div>

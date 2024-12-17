@@ -17,3 +17,11 @@ export function register(data) {
     data: data
   });
 }
+
+export function getFriendList(data) {
+  return request({
+    url: "/friend/getFriend",
+    method: "get",
+    params: data
+  });
+}

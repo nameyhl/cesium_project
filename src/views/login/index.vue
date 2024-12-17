@@ -5,8 +5,8 @@ import { ElMessage } from 'element-plus';
 import { login } from '../../api/user';
 
 // 引入userStore
-import { useUserInfoStore } from '../../store/userStore/index'
-const userStore = useUserInfoStore();
+// import { useUserInfoStore } from '../../store/userStore/index'
+// const userStore = useUserInfoStore();
 
 const router = useRouter();
 
@@ -33,8 +33,8 @@ const loginWeb = async () => {
       // pinia存储用户信息
       console.log(userStore);
 
-      userStore.setToken(user.token);
-      userStore.setUserName(user.userName);
+      // userStore.setToken(user.token);
+      // userStore.setUserName(user.userName);
       // userStore.setRole(user.role);
       // 跳转首页
       // router.push('/home');

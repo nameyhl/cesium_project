@@ -1,7 +1,7 @@
 import { createPinia } from "pinia";
-import { useUserStore } from "./userStore/index";
+// import { useUserInfoStore } from "./userStore/index";
 
 const pinia = createPinia();
 
-export { useUserStore }
+// export { useUserInfoStore }
 export default pinia;
