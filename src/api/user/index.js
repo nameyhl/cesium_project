@@ -26,3 +26,12 @@ export function getFriendList(data) {
     params: data
   });
 }
+
+// 获取用户信息
+export function getUserInfo(data) {
+  return request({
+    url: "/user/getuser",
+    method: "get",
+    params: data
+  });
+}
