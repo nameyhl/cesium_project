@@ -2,7 +2,7 @@
 .chatBox {
     margin: 10px auto;
     width: 1200px;
-    // height: 600px;
+    height: 91vh;
     background: #409eff;
 
     .frendTitle {
@@ -16,7 +16,7 @@
 
     .leftBox {
         position: relative;
-        height: 600px;
+        height: 85vh;
         background-color: #fff;
         margin: 0 10px 10px 10px;
 
@@ -53,12 +53,7 @@
             }
         }
     }
-
-    .rightBox {
-        height: 600px;
-        background-color: #fff;
-        margin: 0 10px 10px 10px;
-        .listTile {
+    .listTile {
             width: auto;
             height: 50px;
             background-color: #409eff;
@@ -66,14 +61,19 @@
             line-height: 50px;
             padding-left: 50px;
         }
+    .rightBox {
+        height: 85vh;
+        background-color: #fff;
+        margin: 0 10px 10px 10px;
+        
 
         .frend {
             display: inline-block;
             overflow-y: scroll;
-            height: 500px;
+            height: 80vh;
 
             .frendBox {
-                width: 410px;
+                width: 370px;
                 margin: 10px 20px;
 
                 .frendName {
@@ -103,6 +103,7 @@
 
 .frendBox:hover {
     background-color: #d3dce6;
+    cursor: pointer;
 }
 </style>
 
@@ -135,10 +136,10 @@
             </el-col>
             <el-col :span="9">
                 <!-- 好友列表 -->
-                <div class="rightBox">
-                    <div class="listTile">
+                <div class="listTile">
                         好友列表
                     </div>
+                <div class="rightBox">
                     <div class="frend">
                         <div class="frendBox" v-for="item in frendList" @click="chosseFrend(item)">
                             <div class="frendName">{{ item.name }}</div>
@@ -157,22 +158,28 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onBeforeMount } from 'vue';
 
 import { getFriendList } from '@/api/user';
+
+// 引入userStore
+import { useUserInfoStore } from '@/store/userStore/index'
+const userStore = useUserInfoStore();
 
 let frendList = reactive([])
 let frend = ref('');
 
-const getFriend = () => {
-    let userId = 1
-    getFriendList({userId : 1}).then(res => {
-        frendList = res.data;
-        console.log(frendList);
+const getFriend = async () => {
+    let userId = userStore.id;
+    console.log(userId);
+    await getFriendList({userId : userId}).then(res => {
+        frendList.push(...res.data);
         
     })
+    console.log(frendList);
+    
 }
-getFriend()
+    getFriend();
 
 const chosseFrend = (row) => {
     frend.value = row;

@@ -1,7 +1,9 @@
 import { createPinia } from "pinia";
-// import { useUserInfoStore } from "./userStore/index";
+
+// pinia持久化插件pinia-plugin-persistedstate
+import piniaPersist from "pinia-plugin-persistedstate";
 
 const pinia = createPinia();
+pinia.use(piniaPersist);
 
-// export { useUserInfoStore }
 export default pinia;

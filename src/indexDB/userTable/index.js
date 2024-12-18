@@ -41,7 +41,6 @@ export const addData = (db, storeName, data) => {
         id: count + 1,
         ...data,
       };
-      console.log(params);
 
       let request = db
         .transaction([storeName], 'readwrite') //事务对象  指定表格名称和操模式
@@ -106,7 +105,6 @@ export const cursorGetData = (db, storeName, id) => {
 //通过索引读取数据
 export const getDataByIndex = (db, storeName, indexName, index) => {
   let store = db.transaction([storeName], 'readwrite').objectStore(storeName);
-  console.log(store.indexNames);
   let request = store.index(indexName).get(index);
 
   //判断是否存在indexName的索引，不存在则创建一个索引

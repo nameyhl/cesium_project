@@ -1,5 +1,8 @@
 //配置路由
+import { ElMessage } from 'element-plus';
 import { createRouter, createWebHashHistory } from 'vue-router';
+
+
 
 const routes = [
   {
@@ -32,6 +35,11 @@ const routes = [
         path: '/about',
         component: () => import('@/views/about/index.vue'),
       },
+      {
+        name: 'tools',
+        path: '/tools',
+        component: () => import('@/views/tools/index.vue'),
+      },
     ],
   },
   {
@@ -44,6 +52,11 @@ const routes = [
     path: '/registry',
     component: () => import('@/views/registry/index.vue'),
   },
+  {
+    name: 'userInfo',
+    path: '/userInfo',
+    component: () => import('@/views/userInfo/index.vue'),
+  },
 
 ];
 
@@ -51,5 +64,22 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+
+// 配置全局路由守卫
+
+router.beforeEach((to, from, next) => {
+  if(to.path === '/login' || to.path === '/registry') {
+    next()
+  } else {
+    const userInfo = localStorage.getItem('userInfo')
+    const token = userInfo ? JSON.parse(userInfo).token : ''
+    if(token) {
+      next()
+    } else {
+      ElMessage.error('请先登录')
+      next('/login')
+    }
+  }
+})
 
 export default router;

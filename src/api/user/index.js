@@ -18,6 +18,7 @@ export function register(data) {
   });
 }
 
+// 获取好友列表
 export function getFriendList(data) {
   return request({
     url: "/friend/getFriend",

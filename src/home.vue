@@ -3,17 +3,18 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-// 引入userStore
+// 引入userInfoStore
+import { useUserInfoStore } from './store/userStore/index'
+const userStore = useUserInfoStore();
 
-
-const username = localStorage.getItem("username")
+const username = userStore.username;
 
 const menuTag = reactive([
     { name: '首页', index: '/home' },
     { name: '地图', index: '/earth' },
     { name: '数据', index: '/info' },
     { name: '聊天', index: '/about' },
-    { name: '工具', index: '/test' },
+    { name: 'AI聊天工具', index: '/tools' },
     { name: '帮助', index: '/help' },
 ])
 const activeIndex = ref('1')
@@ -22,6 +23,18 @@ const activeIndex = ref('1')
 // }
 const goTo = (key) => {
     router.push(key);
+}
+
+const logOut = () => {
+    userStore.removeToken();
+    userStore.removeUserName();
+    userStore.removeName();
+    userStore.removeImgUrl();
+    userStore.removeId();
+    router.push('/login');
+}
+const toUserINfo = () => {
+    router.push('/userInfo');
 }
 </script>
 <template>
@@ -33,8 +46,8 @@ const goTo = (key) => {
                         }}</el-menu-item>
                     <el-sub-menu style="float: right;">
                         <template #title>{{ username }}</template>
-                        <el-menu-item>个人中心</el-menu-item>
-                        <el-menu-item>退出登录</el-menu-item>
+                        <el-menu-item @click="toUserINfo">个人中心</el-menu-item>
+                        <el-menu-item @click="logOut">退出登录</el-menu-item>
                     </el-sub-menu>
                 </el-menu>
             </el-header>

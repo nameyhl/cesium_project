@@ -5,8 +5,8 @@ import { ElMessage } from 'element-plus';
 import { login } from '../../api/user';
 
 // 引入userStore
-// import { useUserInfoStore } from '../../store/userStore/index'
-// const userStore = useUserInfoStore();
+import { useUserInfoStore } from '../../store/userStore/index'
+const userStore = useUserInfoStore();
 
 const router = useRouter();
 
@@ -22,22 +22,16 @@ const loginWeb = async () => {
   await login(form).then((res) => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
-      console.log(res.data);
       let user = res.data;
-      // 本地存储用户信息
-      localStorage.setItem("token", user.token);
-      localStorage.setItem("username", user.userName);
-      localStorage.setItem("userId", user.id);
-      // localStorage.setItem("role", user.role);
-      console.log(user);
+      
       // pinia存储用户信息
-      console.log(userStore);
-
-      // userStore.setToken(user.token);
-      // userStore.setUserName(user.userName);
-      // userStore.setRole(user.role);
+      userStore.setToken(user.token);
+      userStore.setUsername(user.userName);
+      userStore.setName(user.name);
+      userStore.setImgUrl(user.imgUrl);
+      userStore.setId(user.id);
       // 跳转首页
-      // router.push('/home');
+      router.push('/home');
     } else {
       ElMessage.error(res.msg);
     }
