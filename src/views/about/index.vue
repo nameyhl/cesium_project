@@ -53,23 +53,25 @@
             }
         }
     }
+
     .listTile {
-            width: auto;
-            height: 50px;
-            background-color: #409eff;
-            color: #fff;
-            line-height: 50px;
-            padding-left: 50px;
-        }
+        width: auto;
+        height: 50px;
+        background-color: #409eff;
+        color: #fff;
+        line-height: 50px;
+        padding-left: 50px;
+    }
+
     .rightBox {
         height: 85vh;
         background-color: #fff;
         margin: 0 10px 10px 10px;
-        
+
 
         .frend {
             display: inline-block;
-            overflow-y: scroll;
+            overflow: overlay;
             height: 80vh;
 
             .frendBox {
@@ -79,6 +81,7 @@
                 .frendName {
                     margin: 10px;
                 }
+
                 .msg {
                     display: flex;
                     justify-content: space-between;
@@ -137,8 +140,8 @@
             <el-col :span="9">
                 <!-- 好友列表 -->
                 <div class="listTile">
-                        好友列表
-                    </div>
+                    好友列表
+                </div>
                 <div class="rightBox">
                     <div class="frend">
                         <div class="frendBox" v-for="item in frendList" @click="chosseFrend(item)">
@@ -166,20 +169,19 @@ import { getFriendList } from '@/api/user';
 import { useUserInfoStore } from '@/store/userStore/index'
 const userStore = useUserInfoStore();
 
-let frendList = reactive([])
+let frendList = ref([])
 let frend = ref('');
 
 const getFriend = async () => {
     let userId = userStore.id;
     console.log(userId);
-    await getFriendList({userId : userId}).then(res => {
-        frendList.push(...res.data);
-        
+    await getFriendList({ userId: userId }).then(res => {
+        frendList.value = res.data;
+
     })
-    console.log(frendList);
-    
+
 }
-    getFriend();
+getFriend();
 
 const chosseFrend = (row) => {
     frend.value = row;

@@ -2,9 +2,15 @@
 import { reactive, ref } from 'vue'
 
 // 引入xfAPI方法
-import { getReply } from '../../api/XFAI';
-import { ElMessage } from 'element-plus';
+import { getReply } from '@/api/XFAI';
+// 引入存放记录的方法
+import { setChat, getChat, getChatPage } from '@/api/chat'
+import { ElMessage, ElMessageBox } from 'element-plus';
+// 引入userStore
+import { useUserInfoStore } from '@/store/userStore';
+const userStore = useUserInfoStore()
 
+const userId = userStore.id
 
 let titleText = ref('无人扶我青云志，我自踏雪至山巅');
 let fontFrom = ref('青云志');
@@ -13,7 +19,6 @@ let fontCreater = ref('徐霞客');
 let disabled = ref(false);
 // buttom的加载状态
 let loading = ref(false);
-let imgUrl = ref('');
 let question = ref('');
 
 // question和answer的数组
@@ -35,14 +40,16 @@ const sendQuestion = () => {
         }
         questionAndAnswer.push(obj)
         getReply(data).then(res => {
-            showAnwser(res.data)
-            let obj = {
-                level: 2,
-                content: res.data
+            let request = {
+                sendUserId: userId,
+                question: content,
+                answer: res.data
             }
-            questionAndAnswer.push(obj)
-            console.log(questionAndAnswer);
-            
+            // 清空历史数据
+            historyData.splice(0, historyData.length)
+            getHistroy()
+            setChat(request)
+            showAnwser(res.data)
         })
     } else {
         ElMessage.error('请输入问题');
@@ -52,7 +59,18 @@ const sendQuestion = () => {
 
 }
 
+let historyData = reactive([])
+// 获取最近两天的记录
+const getHistroy = async () => {
+    await getChat({ sendUserId: userId }).then(res => {
+        res.data.forEach(item => {
+            item.createTime = item.createTime.substring(0, 10)
+        })
+        historyData.push(...res.data)
+    })
+}
 
+getHistroy()
 // 将获取到的answer回显到页面
 // 让anwser一个字一个字显示
 const showAnwser = (val) => {
@@ -66,12 +84,77 @@ const showAnwser = (val) => {
         if (anwserArr.length == 0) {
             clearInterval(timer)
         }
-    }, 100)
+    }, 10)
     disabled.value = false
     loading.value = false
     question.value = ''
 }
 
+// 展示问答效果
+const showThis = (item) => {
+    ElMessageBox.alert(item.answer, item.question, {
+        confirmButtonText: '确定',
+        callback: action => {
+        }
+    })
+}
+
+// 控制查看更多的Dailog
+let msgBox = ref(false)
+
+// 控制分页
+let page = ref(1)
+let pageSize = ref(5)
+let tableData = reactive([])
+let total = ref(0)
+// 引入table组件
+import myTable from '@/components/myTable.vue';
+const findMore = () => {
+    msgBox.value = true
+    getChatByPage()
+}
+
+const getChatByPage = () => {
+    let data = {
+        sendUserId: userId,
+        page: page.value,
+        num: pageSize.value
+    }
+    getChatPage(data).then(res => {
+        tableData.splice(0, tableData.length)
+        res.data.forEach(item => {
+            item.createTime = item.createTime.substring(0, 10)
+        })
+        tableData.push(...res.data)
+        console.log(tableData);
+        total.value = res.total
+    })
+}
+
+const handleSizeChange = (val) => {
+    pageSize.value = val
+    getChatByPage()
+}
+const handleCurrentChange = (val) => {
+    page.value = val
+    getChatByPage()
+}
+
+
+// 表格行点击后
+const rowClick = (row) => {
+    console.log(row)
+}
+const handleClose = () => {
+    msgBox.value = false
+}
+
+
+const columns = [
+    { label: '问题', prop: 'question' },
+    { label: '回答', prop: 'answer' },
+    { label: '时间', prop: 'createTime' }
+]
 </script>
 <template>
     <div class="common-layout">
@@ -82,8 +165,24 @@ const showAnwser = (val) => {
         </div>
         <el-row style="margin: 0 10px;" :gutter="12">
             <el-col :span="6">
-                <div class="imgBox">
-                    <img :src="imgUrl" width="100%" height="460px" alt="">
+                <div class="histroyTile">历史记录</div>
+                <div class="histroyBox">
+                    <div class="questionAndAnswer" v-for="item in historyData" @click="showThis(item)">
+                        <div class="question">{{ item.question }}</div>
+                        <div class="anwserAndTime">
+                            <el-row>
+                                <el-col :span="14">
+                                    <div class="anwser">{{ item.answer }}</div>
+                                </el-col>
+                                <el-col :span="10">
+                                    <div class="time">{{ item.createTime }}</div>
+                                </el-col>
+                            </el-row>
+                        </div>
+                    </div>
+                    <div class="findMore">
+                        <el-button type="" @click="findMore" link>点击查看更多</el-button>
+                    </div>
                 </div>
 
             </el-col>
@@ -91,9 +190,7 @@ const showAnwser = (val) => {
                 <div class="AIBox">
                     <div class="AITitle">You can try saying a sentence</div>
                     <div class="AIBody">
-                        <div class="answerHistry" v-for="item in questionAndAnswer">
-                            <div class="questionBox" v-if="item.level == 1">{{  item.content }}</div>
-                            <div class="answerBox" v-if="item.level == 2">{{  item.content }}</div>
+                        <div class="answerHistry">
                         </div>
                         <div class="anwser" id="anwser" :ref="anwserBox"></div>
                         <div class="question">
@@ -109,7 +206,21 @@ const showAnwser = (val) => {
                 </div>
             </el-col>
         </el-row>
-
+        <el-dialog v-model="msgBox" title="历史记录" width="1000" :before-close="handleClose">
+            <myTable :columns="columns" :tableData="tableData" :rowClick="rowClick" :isOperate="true" :isDetail="true"
+                :isUpdate="false" :isDelete="false" :operateWidth="80"  />
+            <el-pagination v-model:current-page="page" v-model:page-size="pageSize" :page-sizes="[5, 10, 15, 20]"
+                :size="'small'" layout="total, sizes, prev, pager, next, jumper" :total="total"
+                @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="msgBox = false">Cancel</el-button>
+                    <el-button type="primary" @click="msgBox = false">
+                        Confirm
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -145,10 +256,67 @@ const showAnwser = (val) => {
         }
     }
 
-    .imgBox {
+    .histroyTile {
+        background-color: #409eff;
+        padding: 0 1px;
         width: 100%;
-        height: 460px;
+        height: 50px;
+        line-height: 50px;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 500;
+        text-align: center;
+        font-style: italic;
+    }
+
+    .histroyBox {
+        width: 100%;
+        height: 75vh;
         border: #409eff solid 1px;
+        overflow: overlay;
+
+        .questionAndAnswer {
+            .question {
+                padding: 0 10px;
+                height: 40px;
+                font-size: 18px;
+                font-weight: 900;
+                line-height: 40px;
+                text-align: left;
+                color: #409eff;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .anwserAndTime {
+                justify-content: space-between;
+                padding: 0 10px;
+                font-size: 12px;
+                font-weight: 500;
+                text-align: left;
+                border-bottom: #409eff solid 1px;
+
+                .anwser {
+                    white-space: nowrap;
+                    height: 30px;
+                    line-height: 30px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .time {
+                    height: 30px;
+                    line-height: 30px;
+                    text-align: right;
+                }
+            }
+        }
+
+        .findMore {
+            width: 100px;
+            margin: 0 auto;
+        }
     }
 
     .AIBox {
@@ -171,7 +339,7 @@ const showAnwser = (val) => {
         .AIBody {
             position: relative;
             width: 100%;
-            height: 400px;
+            height: 75vh;
             background-color: #fff;
             margin: 10px 0;
 
@@ -190,6 +358,12 @@ const showAnwser = (val) => {
         }
 
     }
+
+}
+
+.questionAndAnswer:hover {
+    background-color: #e6eaf6;
+    cursor: pointer;
 
 }
 </style>
