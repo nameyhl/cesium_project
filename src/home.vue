@@ -15,7 +15,7 @@ const menuTag = reactive([
     { name: '数据', index: '/info' },
     { name: '聊天', index: '/about' },
     { name: 'AI聊天工具', index: '/tools' },
-    { name: '帮助', index: '/help' },
+    { name: '添加书友', index: '/applyFriend' },
 ])
 const activeIndex = ref('1')
 // const handleSelect = (key) => {

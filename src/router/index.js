@@ -22,11 +22,6 @@ const routes = [
         component: () => import('@/views/home/index.vue'),
       },
       {
-        name: 'test',
-        path: '/test',
-        component: () => import('@/views/test/index.vue'),
-      },
-      {
         name: 'threeJS',
         path: '/threeJS',
         component: () => import('@/views/threeJS/index.vue'),
@@ -42,9 +37,9 @@ const routes = [
         component: () => import('@/views/tools/index.vue'),
       },
       {
-        name: 'help',
-        path: '/help',
-        component: () => import('@/views/test/index.vue'),
+        name: 'applyFriend',
+        path: '/applyFriend',
+        component: () => import('@/views/applyFriend/index.vue'),
       },
     ],
   },
