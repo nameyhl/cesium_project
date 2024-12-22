@@ -35,3 +35,12 @@ export function getUserInfo(data) {
     params: data
   });
 }
+
+// 查询用户
+export function getUerByInfo(data) {
+  return request({
+    url: "/user/getuserbyinfo",
+    method: "get",
+    params: data
+  })
+}

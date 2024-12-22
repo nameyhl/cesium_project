@@ -26,3 +26,12 @@ export function updateApplyFriend(data) {
     data: data
   })
 }
+
+// 申请添加好友
+export function addApplyFriend(data) {
+  return request({
+    url: 'applyFriend/applyFriend',
+    method: 'post',
+    data: data
+  })
+}
