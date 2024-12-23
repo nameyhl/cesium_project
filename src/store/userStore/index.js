@@ -42,6 +42,30 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         id.value = ""
     }
 
+    const role = ref("")
+    const setRole = (val) => {
+        role.value = val
+    }
+    const removeRole = () => {
+        role.value = ""
+    }
+
+    const phone = ref("")
+    const setPhone = (val) => {
+        phone.value = val
+    }
+    const removePhone = () => {
+        phone.value = ""
+    }
+
+    const msg = ref("")
+    const setMsg = (val) => {
+        msg.value = val
+    }
+    const removeMsg = () => {
+        msg.value = ""
+    }
+
     return {
         token,
         setToken,
@@ -57,7 +81,16 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         removeImgUrl,
         id,
         setId,
-        removeId
+        removeId,
+        role,
+        setRole,
+        removeRole,
+        phone,
+        setPhone,
+        removePhone,
+        msg,
+        setMsg,
+        removeMsg,
     }
 },{
     persist: true

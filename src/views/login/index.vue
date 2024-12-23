@@ -23,13 +23,17 @@ const loginWeb = async () => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
       let user = res.data;
-      
+        user.role = user.role == "admin" ? '管理员' : '普通用户';
+        user.phone ? user.phone = user.phone.substr(0, 3) + '****' + user.phone.substr(7) : '';
       // pinia存储用户信息
       userStore.setToken(user.token);
       userStore.setUsername(user.userName);
       userStore.setName(user.name);
       userStore.setImgUrl(user.imgUrl);
       userStore.setId(user.id);
+      userStore.setRole(user.role);
+      userStore.setPhone(user.phone);
+      userStore.setMsg(user.msg);
       // 跳转首页
       router.push('/home');
     } else {

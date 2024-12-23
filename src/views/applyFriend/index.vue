@@ -127,15 +127,20 @@ const handleClick = (row) => {
 let reason = ref('')
 // 提交申请
 const submitApply = async () => {
+    if (reason.value == '') {
+        return ElMessage.error('申请理由不能为空');
+    }
     let obj = {
-        userId: userId,
-        applyId: submitData.value.id,
+        userId: submitData.value.id,
+        applyId: userId ,
         reason: reason.value
     }
     await addApplyFriend(obj).then(res => {
         console.log(res.data);
-        if (res.data == "success") {
+        if (res.code == "200") {
             ElMessage.success('提交申请成功，等待用户添加');
+        } else {
+            ElMessage.error(`提交申请失败${res.msg}`);
         }
     })
     dialogVisible.value = false;
@@ -149,6 +154,7 @@ const submitApply = async () => {
             applyMeData.value[i].state = applyMeData.value[i].state == "pass" ? '已通过' : applyMeData.value[i].state == "fail" ? '已拒绝' : '未处理';
         }
     })
+    reason.value = '';
 }
 
 // 获取该账号申请好友列表
