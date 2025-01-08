@@ -15,11 +15,13 @@ export default defineConfig({
     port: 8085,
     open: false,
   },
-  Proxy: {
-    // '/api': {
-    //     target: 'https://apis.whyta.cn/',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, '')
-    //   },
+  devServer: {
+    proxy: {
+      "/user": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/user/, ""),
+      },
+    },
   },
 });

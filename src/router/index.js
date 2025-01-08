@@ -41,6 +41,11 @@ const routes = [
         path: '/applyFriend',
         component: () => import('@/views/applyFriend/index.vue'),
       },
+      {
+        name: 'littleGame',
+        path: '/littleGame',
+        component: () => import('@/views/littleGame/index.vue'),
+      },
     ],
   },
   {

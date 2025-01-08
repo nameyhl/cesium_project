@@ -1,6 +1,7 @@
 <template>
     <div class="body">
         <div class="userInfoBox">
+            <img src="http://127.0.0.1:3000/images/b4478299e2c7a0b6b41ec5000.jpeg" alt="">
             <div class="form">
                 <el-form :model="form" label-width="auto">
                     <div class="avatarBox">
