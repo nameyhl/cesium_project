@@ -1,7 +1,6 @@
 <template>
     <div class="body">
         <div class="userInfoBox">
-            <img src="http://127.0.0.1:3000/images/b4478299e2c7a0b6b41ec5000.jpeg" alt="">
             <div class="form">
                 <el-form :model="form" label-width="auto">
                     <div class="avatarBox">
@@ -27,6 +26,9 @@
                         <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" v-model="form.msg"></el-input>
                     </el-form-item>
                 </el-form>
+                <div style=" width: 100px; margin: 0 auto;">
+                <el-button style="width: 100px;" type="primary" @click="submit()">修改信息</el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -42,18 +44,27 @@ import { useUserInfoStore } from '../../store/userStore/index';
 const userStore = useUserInfoStore();
 
 let form = ref({
+    id: userStore.id,
     name: userStore.name,
     avatar: userStore.imgUrl,
     userName: userStore.username,
     role: userStore.role,
+    password: userStore.password,
+    phone: userStore.phone,
     msg: userStore.msg,
 });
+let avatar = ref('');
 
 // 图片上传成功
 const handleAvatarSuccess = (res, file) => {
-    console.log(res, file);
-    form.value.avatar = URL.createObjectURL(file.raw)
+    form.value.avatar = res.imgUrl;
 };
+
+
+// 提交修改
+const submit = () => {
+    console.log(form.value);
+}
 
 
 </script>

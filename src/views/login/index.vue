@@ -34,6 +34,7 @@ const loginWeb = async () => {
       userStore.setRole(user.role);
       userStore.setPhone(user.phone);
       userStore.setMsg(user.msg);
+      userStore.setPassword(user.password);
       // 跳转首页
       router.push('/home');
     } else {

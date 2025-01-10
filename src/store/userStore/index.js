@@ -66,6 +66,14 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         msg.value = ""
     }
 
+    const password = ref("")
+    const setPassword = (val) => {
+        password.value = val
+    }
+    const removePassword = () => {
+        password.value = ""
+    }
+
     return {
         token,
         setToken,
@@ -91,6 +99,9 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         msg,
         setMsg,
         removeMsg,
+        password,
+        setPassword,
+        removePassword
     }
 },{
     persist: true
