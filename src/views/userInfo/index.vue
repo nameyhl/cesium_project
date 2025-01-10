@@ -53,7 +53,6 @@ let form = ref({
 const handleAvatarSuccess = (res, file) => {
     console.log(res, file);
     form.value.avatar = URL.createObjectURL(file.raw)
-    console.log(form.value.avatar);
 };
 
 

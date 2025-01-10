@@ -16,6 +16,7 @@ const menuTag = reactive([
     { name: '聊天', index: '/about' },
     { name: 'AI聊天工具', index: '/tools' },
     { name: '添加书友', index: '/applyFriend' },
+    { name: '沉淀', index: '/littleGame' },
 ])
 const activeIndex = ref('1')
 // const handleSelect = (key) => {
@@ -70,7 +71,7 @@ const toUserINfo = () => {
     padding: 0;
     width: 100%;
 }
-.el-menu--horizontal > .el-menu-item:nth-child(6) {
+.el-menu--horizontal > .el-menu-item:nth-child(7) {
   margin-right: auto;
 }
 </style>
