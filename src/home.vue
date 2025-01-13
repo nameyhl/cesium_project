@@ -12,7 +12,7 @@ const username = userStore.username;
 const menuTag = reactive([
     { name: '首页', index: '/home' },
     { name: '地图', index: '/earth' },
-    { name: '数据', index: '/info' },
+    { name: '论坛', index: '/forum' },
     { name: '聊天', index: '/about' },
     { name: 'AI聊天工具', index: '/tools' },
     { name: '添加书友', index: '/applyFriend' },

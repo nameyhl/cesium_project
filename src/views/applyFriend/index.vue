@@ -24,7 +24,7 @@
                         </el-form>
                     </div>
                     <div class="body">
-                        <el-table :data="tableData" style="width: 100%">
+                        <el-table :data="tableData" >
                             <el-table-column prop="userName" label="用户名" width="100">
                             </el-table-column>
                             <el-table-column prop="name" label="名称" width="80">
@@ -35,7 +35,7 @@
                             </el-table-column>
                             <el-table-column prop="msg" label="相关信息">
                             </el-table-column>
-                            <el-table-column fixed="right" label="Operations" min-width="120">
+                            <el-table-column fixed="right" label="操作" min-width="120">
                                 <template #default="scope">
                                     <el-button link type="primary" size="small" @click="handleClick(scope.row)">
                                         添加
@@ -51,7 +51,8 @@
                     <div class="myApply">
                         <div class="title">我的申请</div>
                         <Table :tableData="myApplyData" :height="'80%'" :changeState="updateApplyFriendState"
-                            :ishave="false" :userId="userId"></Table>
+                            :ishave="false" :userId="userId">
+                        </Table>
                     </div>
                     <div class="applyMe">
                         <div class="title">好友申请列表</div>
@@ -172,8 +173,10 @@ getApplyFriendList({ userId: userId }).then(res => {
 // 获取该账号申请列表
 let myApplyData = ref([]);
 getMyApplyList({ userId: userId }).then(res => {
+    console.log(res.data);
+    
     myApplyData.value = res.data;
-    for (let i = 0; i < applyMeData.value.length; i++) {
+    for (let i = 0; i < myApplyData.value.length; i++) {
         myApplyData.value[i].role = myApplyData.value[i].role == "admin" ? '管理员' : '普通用户';
         myApplyData.value[i].phone ? myApplyData.value[i].phone = myApplyData.value[i].phone.substr(0, 3) + '****' + myApplyData.value[i].phone.substr(7) : '';
         myApplyData.value[i].state = myApplyData.value[i].state == "pass" ? '已通过' : myApplyData.value[i].state == "fail" ? '已拒绝' : '未处理';

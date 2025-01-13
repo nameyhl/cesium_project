@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.7.9",
     "cesium": "1.99",
     "element-plus": "^2.8.8",

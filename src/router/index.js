@@ -46,6 +46,11 @@ const routes = [
         path: '/littleGame',
         component: () => import('@/views/littleGame/index.vue'),
       },
+      {
+        name: 'forum',
+        path: '/forum',
+        component: () => import('@/views/forum/index.vue'),
+      },
     ],
   },
   {
@@ -62,6 +67,11 @@ const routes = [
     name: 'userInfo',
     path: '/userInfo',
     component: () => import('@/views/userInfo/index.vue'),
+  },
+  {
+    name: 'addArticle',
+    path: '/addArticle',
+    component: () => import('@/views/addArticle/index.vue'),
   },
 
 ];
