@@ -90,7 +90,7 @@ onMounted(() => {
 
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .body {
     width: 1024px;
     height: 92vh;

@@ -1,6 +1,7 @@
 <template>
     <div class="body">
         <div class="userInfoBox">
+        <el-button type="primary" @click="goBack" style="float: left;">返回首页</el-button>
             <div class="form">
                 <el-form :model="form" label-width="auto">
                     <div class="avatarBox">
@@ -14,10 +15,10 @@
                         </el-upload>
                     </div>
                     <el-form-item label="用户名">
-                        <el-input v-model="form.name"></el-input>
+                        <el-input v-model="form.userName"></el-input>
                     </el-form-item>
                     <el-form-item label="姓名">
-                        <el-input v-model="form.userName"></el-input>
+                        <el-input v-model="form.name"></el-input>
                     </el-form-item>
                     <el-form-item label="角色">
                         <el-input v-model="form.role"></el-input>
@@ -27,13 +28,11 @@
                     </el-form-item>
                 </el-form>
                 <div style=" width: 100px; margin: 0 auto;">
-                <el-button style="width: 100px;" type="primary" @click="submit()">修改信息</el-button>
+                    <el-button style="width: 100px;" type="primary" @click="submit()">修改信息</el-button>
                 </div>
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script setup>
@@ -42,6 +41,9 @@ import { Plus } from '@element-plus/icons-vue'
 // 引入userStore
 import { useUserInfoStore } from '../../store/userStore/index';
 const userStore = useUserInfoStore();
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 let form = ref({
     id: userStore.id,
@@ -53,7 +55,6 @@ let form = ref({
     phone: userStore.phone,
     msg: userStore.msg,
 });
-let avatar = ref('');
 
 // 图片上传成功
 const handleAvatarSuccess = (res, file) => {
@@ -61,12 +62,31 @@ const handleAvatarSuccess = (res, file) => {
 };
 
 
+// 引入修改用户信息接口
+import { updateUser } from '../../api/user/index'
+
 // 提交修改
 const submit = () => {
     console.log(form.value);
+    updateUser(form.value);
+    arterRemove()
 }
 
+// 返回上级
+const goBack = () => {
+    router.push('/home');
+}
 
+// 修改信息后
+const arterRemove = async () => {
+    // 清空pinia中的数据
+    userStore.removeName();
+    userStore.removeImgUrl();
+    userStore.removeMsg();
+    userStore.setName(form.value.name);
+    userStore.setImgUrl(form.value.avatar);
+    userStore.setMsg(form.value.msg);
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,13 +1,17 @@
 <template>
     <div class="articleBody">
+        <el-button type="primary" @click="goBack" style="float: left;">返回论坛</el-button>
+        <div class="title">
+            发布一篇属于你的文章吧
+        </div>
         <div class="form">
             <el-form :model="ruleForm" :rules="rules" label-width="auto" class="demo-ruleForm" :size="formSize"
                 status-icon>
-                <el-form-item label="文章名称:" prop="name">
-                    <el-input v-model="ruleForm.name" />
+                <el-form-item label="文章名称:" prop="title">
+                    <el-input v-model="ruleForm.title" />
                 </el-form-item>
                 <el-form-item label="文章摘要:" prop="msg">
-                    <el-input type="textarea" v-model="ruleForm.msg "  :autosize="{ minRows: 2, maxRows: 4 }" />
+                    <el-input type="textarea" v-model="ruleForm.msg" :autosize="{ minRows: 4, maxRows: 6 }" />
                 </el-form-item>
                 <el-form-item label="可见选择:" prop="visible">
                     <!--
@@ -28,7 +32,11 @@
         <div class="editorBody">
             <Toolbar :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode"
                 style="border-bottom: 1px solid #ccc" />
-            <Editor :defaultConfig="editorConfig" :mode="mode" v-model="valueHtml" style="height: 500px;" @onCreated="handleCreated" />
+            <Editor :defaultConfig="editorConfig" :mode="mode" v-model="valueHtml" style="height: 500px;"
+                @onCreated="handleCreated" />
+        </div>
+        <div class="submit">
+            <el-button type="primary" @click="submit">提交</el-button>
         </div>
     </div>
 </template>
@@ -37,16 +45,44 @@
 import '@wangeditor/editor/dist/css/style.css';
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+// 引入userStore
+import { useUserInfoStore } from '@/store/userStore/index'
+const userStore = useUserInfoStore();
+
 
 // 验证表单
 let ruleForm = ref({
-    name: '',
+    title: '',
     msg: '',
-    visible: []
+    visible: 'all'
 })
 // 验证规则
 const rules = ref({
+    title:[{ required: true, message: '请输入文章名称', trigger: 'blur' }],
+    msg:[{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
+    visible:[{ required: true, message: '请选择可见选择', trigger: 'blur' }]
 })
+
+// 引入添加接口
+import { addArticle } from '@/api/articel/index.js'
+const submit = () => {
+    let data = {
+        name: userStore.name,
+        userId: userStore.id,
+        msg: ruleForm.value.msg,
+        visible: ruleForm.value.visible,
+        body: valueHtml.value,
+        title: ruleForm.value.title
+    }
+    console.log(data)
+    addArticle(data).then(res => {
+        
+    })
+}
+
 // 编辑器实例，必须用 shallowRef，重要！
 const editorRef = shallowRef();
 
@@ -70,6 +106,11 @@ onBeforeUnmount(() => {
 const handleCreated = (editor) => {
     editorRef.value = editor; // 记录 editor 实例，重要！
 };
+
+// 返回上级
+const goBack = () => {
+    router.push('/forum');
+}
 
 /**
  *  @onChange="handleChange"
@@ -108,8 +149,25 @@ const handleCreated = (editor) => {
 <style scoped lang="scss">
 .articleBody {
     width: 55vw;
-    margin: 0 auto;
+    margin: 0px auto;
     background-color: #fff;
-    padding: 10px;
+    padding: 20px;
+    .title{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #409eff;
+        font-size: 25px;
+        font-weight: bold;
+    }
+    .editorBody {
+        border: 1px solid #ccc;
+    }
+    .submit{
+        width: 100px;
+        margin: 10px auto;
+    }
 }
 </style>

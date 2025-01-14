@@ -78,8 +78,17 @@
                 width: 370px;
                 margin: 10px 20px;
 
-                .frendName {
+                .frendNameAndAvator {
+                    display: flex;
                     margin: 10px;
+                    height: 50px;
+                    line-height: 50px;
+                    .frendAvator {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 25px;
+                        margin-right: 25px;
+                    }
                 }
 
                 .msg {
@@ -145,7 +154,12 @@
                 <div class="rightBox">
                     <div class="frend">
                         <div class="frendBox" v-for="item in frendList" @click="chosseFrend(item)">
-                            <div class="frendName">{{ item.name }}</div>
+                            <div class="frendNameAndAvator">
+                                <div class="frendAvator">
+                                    <img :src="item.imgUrl" width="50px" height="50px" style="border-radius: 25px;" alt="">
+                                </div>
+                                <div class="frendName">{{ item.name }}</div>
+                            </div>
                             <div class="msg">
                                 <div class="lastMsg">{{ item.text }}</div>
                                 <div class="sendTime">{{ item.time }}</div>
@@ -177,7 +191,8 @@ const getFriend = async () => {
     console.log(userId);
     await getFriendList({ userId: userId }).then(res => {
         frendList.value = res.data;
-
+        console.log(frendList.value);
+        
     })
 
 }

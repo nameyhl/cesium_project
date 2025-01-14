@@ -44,3 +44,11 @@ export function getUerByInfo(data) {
     params: data
   })
 }
+
+export function updateUser (data) {
+  return request({
+    url: "/user/updateuser",
+    method: "post",
+    data: data
+  })
+}

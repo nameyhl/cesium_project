@@ -1,7 +1,10 @@
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, watch, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
+const route = useRoute()
+
+
 
 // 引入userInfoStore
 import { useUserInfoStore } from './store/userStore/index'
@@ -11,7 +14,7 @@ const username = userStore.username;
 
 const menuTag = reactive([
     { name: '首页', index: '/home' },
-    { name: '地图', index: '/earth' },
+    // { name: '地图', index: '/earth' },
     { name: '论坛', index: '/forum' },
     { name: '聊天', index: '/about' },
     { name: 'AI聊天工具', index: '/tools' },
@@ -27,15 +30,15 @@ const goTo = (key) => {
 }
 
 const logOut = () => {
-    userStore.removeToken();
-    userStore.removeUserName();
-    userStore.removeName();
-    userStore.removeImgUrl();
-    userStore.removeId();
+    localStorage.removeItem('userInfo');
     router.push('/login');
 }
 const toUserINfo = () => {
     router.push('/userInfo');
+}
+
+const addArticle = () => {
+    router.push('/addArticle')
 }
 </script>
 <template>
@@ -43,11 +46,17 @@ const toUserINfo = () => {
         <el-container>
             <el-header>
                 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
-                    <el-menu-item v-for="item in menuTag" :index="item.index" @click="goTo(item.index)">{{ item.name
+                    <el-menu-item v-for="item in menuTag" :index="item.index" 
+                        @click="goTo(item.index)">{{ item.name
                         }}</el-menu-item>
                     <el-sub-menu style="float: right;">
-                        <template #title>{{ username }}</template>
+                        <template #title>
+                            <el-avatar style="margin-right: 10px;" v-if="!userStore.imgUrl"> user </el-avatar>
+                            <el-avatar v-else :src="userStore.imgUrl" style="margin-right: 10px;" />
+                            {{ username }}
+                        </template>
                         <el-menu-item @click="toUserINfo">个人中心</el-menu-item>
+                        <el-menu-item @click="addArticle">发布文章</el-menu-item>
                         <el-menu-item @click="logOut">退出登录</el-menu-item>
                     </el-sub-menu>
                 </el-menu>
@@ -71,7 +80,8 @@ const toUserINfo = () => {
     padding: 0;
     width: 100%;
 }
-.el-menu--horizontal > .el-menu-item:nth-child(7) {
-  margin-right: auto;
+
+.el-menu--horizontal>.el-menu-item:nth-child(6) {
+    margin-right: auto;
 }
 </style>
