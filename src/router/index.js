@@ -59,6 +59,11 @@ const routes = [
     component: () => import('@/views/login/index.vue'),
   },
   {
+    name: 'adminLogin',
+    path: '/adminLogin',
+    component: () => import('@/views/adminLogin/index.vue'),
+  },
+  {
     name: 'registry',
     path: '/registry',
     component: () => import('@/views/registry/index.vue'),
@@ -73,7 +78,11 @@ const routes = [
     path: '/addArticle',
     component: () => import('@/views/addArticle/index.vue'),
   },
-
+  {
+    name: 'manage',
+    path: '/manage',
+    component: () => import('@/views/manage/home.vue'),
+  },
 ];
 
 const router = createRouter({
@@ -84,12 +93,12 @@ const router = createRouter({
 // 配置全局路由守卫
 
 router.beforeEach((to, from, next) => {
-  if(to.path === '/login' || to.path === '/registry') {
+  if (to.path === '/login' || to.path === '/registry' || to.path === '/adminLogin') {
     next()
   } else {
     const userInfo = localStorage.getItem('userInfo')
     const token = userInfo ? JSON.parse(userInfo).token : ''
-    if(token) {
+    if (token) {
       next()
     } else {
       ElMessage.error('请先登录')

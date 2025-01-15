@@ -45,10 +45,19 @@ export function getUerByInfo(data) {
   })
 }
 
-export function updateUser (data) {
+export function updateUser(data) {
   return request({
     url: "/user/updateuser",
     method: "post",
     data: data
   })
 }
+
+// 管理员用户登录
+export function adminLogin(data) {
+  return request({
+    url: "/user/adminLogin",
+    method: "post",
+    data: data
+  });
+} 

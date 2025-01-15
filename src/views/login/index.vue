@@ -10,8 +10,8 @@ const userStore = useUserInfoStore();
 
 const router = useRouter();
 
-const routerTo = () => {
-  router.push('/registry');
+const routerTo = (path) => {
+  router.push(path);
 };
 
 let form = reactive({
@@ -23,7 +23,7 @@ const loginWeb = async () => {
     if (res.code == 200) {
       ElMessage.success('登录成功');
       let user = res.data;
-        user.role = user.role == "admin" ? '管理员' : '普通用户';
+      user.role = user.role == "admin" ? '管理员' : '普通用户';
       // pinia存储用户信息
       userStore.setToken(user.token);
       userStore.setUsername(user.userName);
@@ -60,11 +60,16 @@ const loginWeb = async () => {
               <el-button type="primary" @click="loginWeb" style="width: 100px; margin: 10px 0">登录</el-button>
             </div>
           </el-form-item>
-          <div style="text-align: center; margin: 20px 0">
-            <span>没有账号？</span>
-            <el-button link @click="routerTo('/registry')">点击注册</el-button>
-          </div>
+
         </el-form>
+        <div style="text-align: center; margin: 20px 0">
+          <span>没有账号？</span>
+          <el-button link @click="routerTo('/registry')">点击注册</el-button>
+        </div>
+        <div style="text-align: center; margin: 20px 0">
+          <span>你是管理员？</span>
+          <el-button link @click="routerTo('/adminLogin')">点击跳转管理员登录</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -80,7 +85,7 @@ const loginWeb = async () => {
 
   .formBody {
     width: 300px;
-    height: 300px;
+    height: 400px;
     margin: 0 auto;
     background-color: white;
 

@@ -46,12 +46,12 @@ const addArticle = () => {
         <el-container>
             <el-header>
                 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
-                    <el-menu-item v-for="item in menuTag" :index="item.index" 
-                        @click="goTo(item.index)">{{ item.name
+                    <el-menu-item v-for="item in menuTag" :index="item.index" @click="goTo(item.index)">{{ item.name
                         }}</el-menu-item>
                     <el-sub-menu style="float: right;">
                         <template #title>
-                            <el-avatar style="margin-right: 10px;" v-if="!userStore.imgUrl"> user </el-avatar>
+                            <el-avatar style="margin-right: 10px;" v-if="!userStore.imgUrl"> {{ username }}
+                            </el-avatar>
                             <el-avatar v-else :src="userStore.imgUrl" style="margin-right: 10px;" />
                             {{ username }}
                         </template>
