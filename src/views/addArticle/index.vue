@@ -5,7 +5,7 @@
             发布一篇属于你的文章吧
         </div>
         <div class="form">
-            <el-form :model="ruleForm" :rules="rules" label-width="auto" class="demo-ruleForm" :size="formSize"
+            <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="auto" class="demo-ruleForm"
                 status-icon>
                 <el-form-item label="文章名称:" prop="title">
                     <el-input v-model="ruleForm.title" />
@@ -29,6 +29,7 @@
                 </el-form-item>
             </el-form>
         </div>
+        <div class="msg">文章内容中不能有双引号哟</div>
         <div class="editorBody">
             <Toolbar :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode"
                 style="border-bottom: 1px solid #ccc" />
@@ -36,7 +37,7 @@
                 @onCreated="handleCreated" />
         </div>
         <div class="submit">
-            <el-button type="primary" @click="submit">提交</el-button>
+            <el-button type="primary" @click="submit(ruleFormRef)">提交</el-button>
         </div>
     </div>
 </template>
@@ -61,25 +62,46 @@ let ruleForm = ref({
 })
 // 验证规则
 const rules = ref({
-    title:[{ required: true, message: '请输入文章名称', trigger: 'blur' }],
-    msg:[{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
-    visible:[{ required: true, message: '请选择可见选择', trigger: 'blur' }]
+    title: [{ required: true, message: '请输入文章名称', trigger: 'blur' }],
+    msg: [{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
+    visible: [{ required: true, message: '请选择可见选择', trigger: 'blur' }]
 })
 
 // 引入添加接口
 import { addArticle } from '@/api/articel/index.js'
-const submit = () => {
-    let data = {
-        name: userStore.name,
-        userId: userStore.id,
-        msg: ruleForm.value.msg,
-        visible: ruleForm.value.visible,
-        body: valueHtml.value,
-        title: ruleForm.value.title
+import { ElMessage } from 'element-plus';
+
+const ruleFormRef = ref(null)
+const submit = async (formEl) => {
+    if (valueHtml.value.indexOf('"') != -1) { 
+        ElMessage.error('文章内容中有英文双引号')
+        return
     }
-    console.log(data)
-    addArticle(data).then(res => {
-        
+    if (!formEl) return
+    await formEl.validate((valid, fields) => {
+        if (valid) {
+            let data = {
+                name: userStore.name,
+                userId: userStore.id,
+                msg: ruleForm.value.msg,
+                visible: ruleForm.value.visible,
+                body: valueHtml.value,
+                title: ruleForm.value.title
+            }
+            ruleForm.value = {
+                title: '',
+                msg: '',
+                visible: 'all'
+            }
+            valueHtml.value = ''
+            console.log(data)
+            addArticle(data).then(res => {
+
+            })
+        } else {
+            ElMessage.error('请将表单补充完整')
+            return false
+        }
     })
 }
 
@@ -152,7 +174,8 @@ const goBack = () => {
     margin: 0px auto;
     background-color: #fff;
     padding: 20px;
-    .title{
+
+    .title {
         width: 100%;
         height: 50px;
         line-height: 50px;
@@ -162,10 +185,18 @@ const goBack = () => {
         font-size: 25px;
         font-weight: bold;
     }
+
+    .msg {
+        color: #faa9a9;
+        font-size: 14px;
+        text-align: center;
+    }
+
     .editorBody {
         border: 1px solid #ccc;
     }
-    .submit{
+
+    .submit {
         width: 100px;
         margin: 10px auto;
     }

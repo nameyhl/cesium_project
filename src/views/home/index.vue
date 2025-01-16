@@ -18,8 +18,10 @@ const classTitle = ref(null)
 
 // 控制分类目录展开还是收起
 const showClassification = ref(false)
+const showClassify = ref(true)
 const isShowClassification = () => {
     showClassification.value = !showClassification.value
+    showClassify.value = !showClassify.value
 }
 </script>
 <template>
@@ -38,7 +40,10 @@ const isShowClassification = () => {
             </div>
             <div class="classification">
                 <div class="title" ref="classTitle">
-                    <div>分类</div>
+                    <div>书籍分类</div>
+                    <div class="classifyList" v-if="showClassify">
+                        <div class="classify" v-for="item in classification">{{ item.name }}</div>
+                    </div>
                     <el-button type="primary" size="small" @click="isShowClassification">
                         <el-icon v-if="showClassification">
                             <ArrowUp />
@@ -61,6 +66,7 @@ const isShowClassification = () => {
                         </div>
                     </div>
                 </div>
+                <div v-else></div>
             </div>
         </div>
         <div class="body"></div>
@@ -120,6 +126,24 @@ const isShowClassification = () => {
         .classification {
             width: 1000px;
 
+            .classifyList {
+                display: flex;
+
+                .classify {
+                    width: 100px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    margin-right: 10px;
+
+                    &:hover {
+                        color: #409EFF;
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
             .title {
                 height: 30px;
                 line-height: 20px;
@@ -133,9 +157,10 @@ const isShowClassification = () => {
             .classBody {
                 width: 1000px;
                 margin: 0 auto;
-                &:last-child{
-                margin-bottom: 5px;
-            }
+
+                &:last-child {
+                    margin-bottom: 5px;
+                }
 
                 .classBox {
                     display: flex;
@@ -151,14 +176,13 @@ const isShowClassification = () => {
                         &:hover {
                             color: #409EFF;
                             cursor: pointer;
-                            border-bottom: 1px solid #409EFF;
+                            text-decoration: underline;
                         }
                     }
 
                     .childClass {
                         width: 80px;
-                        color: #808080;
-                        font-weight: 300;
+                        color: #7a7a7a;
                         white-space: nowrap;
                         font-size: 14px;
                         overflow: hidden;

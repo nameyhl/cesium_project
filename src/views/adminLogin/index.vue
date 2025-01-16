@@ -1,4 +1,7 @@
 <script setup>
+/**
+ * 管理员用户登录页面
+ */
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue'
 import { useUserInfoStore } from '@/store/userStore/index'
@@ -29,27 +32,31 @@ let login = async (formEl) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!')
       let data = {
         userName: ruleForm.value.userName,
         password: ruleForm.value.password
       }
       adminLogin(data).then(res => {
-        let user = res.data;
-        console.log(user);
+        if (res.code === 200) {
+          let user = res.data;
+          console.log(user);
+          // user.role = user.role == "admin" ? '管理员' : '普通用户';
+          // pinia存储用户信息
+          userStore.setToken(user.token);
+          userStore.setUsername(user.userName);
+          userStore.setName(user.name);
+          userStore.setImgUrl(user.imgUrl);
+          userStore.setId(user.id);
+          userStore.setRole(user.role);
+          userStore.setPhone(user.phone);
+          userStore.setMsg(user.msg);
+          userStore.setPassword(user.password);
+          ElMessage.success('登录成功');
+          router.push("/manage/classify")
+        } else {
+          ElMessage.error(res.msg);
+        }
 
-        // user.role = user.role == "admin" ? '管理员' : '普通用户';
-        // pinia存储用户信息
-        userStore.setToken(user.token);
-        userStore.setUsername(user.userName);
-        userStore.setName(user.name);
-        userStore.setImgUrl(user.imgUrl);
-        userStore.setId(user.id);
-        userStore.setRole(user.role);
-        userStore.setPhone(user.phone);
-        userStore.setMsg(user.msg);
-        userStore.setPassword(user.password);
-        router.push("/manage")
       })
     } else {
       ElMessage.error('请账号或者密码')

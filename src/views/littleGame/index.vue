@@ -58,6 +58,8 @@ const addBox = (doc) => {
     if (gameOver.value) {
         gameOver.value = false
     }
+    console.log(doc);
+    
     let div = document.createElement('div')
     div.className = 'ball'
     doc.appendChild(div)
@@ -67,7 +69,9 @@ const addBox = (doc) => {
     let x = Math.random() * (rec.width - 100)
     let y = Math.random() * (rec.height - 100)
 
-
+    div.style.width = '30px'
+    div.style.height = '30px'
+    div.style.backgroundColor = '#409eff'
     div.style.left = x + 'px'
     div.style.top = y + 'px'
 
@@ -75,6 +79,8 @@ const addBox = (doc) => {
         addCount()
         // 删除点击的盒子
         div.remove()
+        console.log(div);
+        
         addBox(gameBox.value)
     })
 }
@@ -146,14 +152,9 @@ onMounted(() => {
             }
         }
 
-        .ball {
-            width: 30px;
-            height: 30px;
-            border-radius: 15px;
-            background: blue;
-            position: absolute;
-        }
+        
     }
 
 }
+
 </style>
