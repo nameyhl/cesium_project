@@ -8,3 +8,11 @@ export function addArticle(data) {
     data: data
   })
 }
+
+// 获取文章列表接口
+export function getArticel() {
+  return request({
+    url: 'article/getArticel',
+    method: 'get',
+  })
+}
