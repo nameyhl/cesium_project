@@ -167,7 +167,7 @@ const columns = [
             <el-col :span="6">
                 <div class="histroyTile">历史记录</div>
                 <div class="histroyBox">
-                    <div class="questionAndAnswer" v-for="item in historyData" @click="showThis(item)">
+                    <div class="questionAndAnswer" v-for="item in historyData" @click="showThis(item)" :key="item">
                         <div class="question">{{ item.question }}</div>
                         <div class="anwserAndTime">
                             <el-row>

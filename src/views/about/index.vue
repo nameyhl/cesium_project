@@ -153,7 +153,7 @@
                 </div>
                 <div class="rightBox">
                     <div class="frend">
-                        <div class="frendBox" v-for="item in frendList" @click="chosseFrend(item)">
+                        <div class="frendBox" v-for="item in frendList" @click="chosseFrend(item)" :key="item">
                             <div class="frendNameAndAvator">
                                 <div class="frendAvator">
                                     <img :src="item.imgUrl" width="50px" height="50px" style="border-radius: 25px;" alt="">

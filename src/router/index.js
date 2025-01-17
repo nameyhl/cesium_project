@@ -49,6 +49,16 @@ const routes = [
         path: "/forum",
         component: () => import("@/views/forum/index.vue"),
       },
+      {
+        name: "articel",
+        path: "/articel",
+        component: () => import("@/views/articel/index.vue"),
+      },
+      {
+        name: "author",
+        path: "/author",
+        component: () => import("@/views/author/index.vue"),
+      },
     ],
   },
   {

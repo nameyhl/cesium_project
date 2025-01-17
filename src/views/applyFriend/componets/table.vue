@@ -1,6 +1,6 @@
 <template>
     <el-table :data="props.tableData" :height="props.height">
-        <el-table-column v-for="column in columns" :label="column.label" :prop="column.prop" show-overflow-tooltip
+        <el-table-column v-for="column in columns" :label="column.label" :key="column" :prop="column.prop" show-overflow-tooltip
             :width="column.width"></el-table-column>
         <el-table-column fixed="right" label="操作">
             <template #default="scope">

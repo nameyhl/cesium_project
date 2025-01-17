@@ -33,7 +33,7 @@ const isShowClassification = () => {
             </div>
             <div class="serchHistory">
                 <div class="tagBox">
-                    <div v-for="index in history" class="historyTag">
+                    <div v-for="index in history" class="historyTag" :key="index">
                         456451654613213461234654651321345
                     </div>
                 </div>
@@ -42,7 +42,7 @@ const isShowClassification = () => {
                 <div class="title" ref="classTitle">
                     <div>书籍分类</div>
                     <div class="classifyList" v-if="showClassify">
-                        <div class="classify" v-for="item in classification">{{ item.name }}</div>
+                        <div class="classify" v-for="item in classification" :key="item.id">{{ item.name }}</div>
                     </div>
                     <el-button type="primary" size="small" @click="isShowClassification">
                         <el-icon v-if="showClassification">
@@ -55,10 +55,10 @@ const isShowClassification = () => {
                     </el-button>
                 </div>
                 <div v-if="showClassification">
-                    <div class="classBody" v-for="item in classification">
+                    <div class="classBody" v-for="item in classification" :key="item.id">
                         <div class="classBox">
                             <div class="fatherClass">{{ item.name }}</div>
-                            <div class="childClass" v-for="el in item.children">
+                            <div class="childClass" v-for="el in item.children" :key="el.id">
                                 <el-tooltip class="box-item" effect="light" :content="el.name" placement="top">
                                     {{ el.name }}
                                 </el-tooltip>

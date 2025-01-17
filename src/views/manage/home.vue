@@ -38,7 +38,7 @@ const logOut = () => {
       <div class="menu">
         <div class="menuTitle">菜单栏</div>
         <el-menu default-active="2" class="el-menu-vertical-demo" @select="handleSelect">
-          <el-menu-item v-for="item in menu" :index="item.index">
+          <el-menu-item v-for="item in menu" :index="item.index" :key="item">
             <template #title>{{ item.name }}</template>
           </el-menu-item>
         </el-menu>
