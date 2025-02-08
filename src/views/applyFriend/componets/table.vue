@@ -107,7 +107,6 @@ const openDialog = (row) => {
 let dialogInfo = ref({})
 let isShowDialog = ref(false);
 const updateState = (row, state) => {
-    console.log(row, state);
     let obj = {
         userId: row.userId,
         applyId: row.applyId,

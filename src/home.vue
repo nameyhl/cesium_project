@@ -4,8 +4,6 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
-
-
 // 引入userInfoStore
 import { useUserInfoStore } from './store/userStore/index'
 const userStore = useUserInfoStore();
@@ -22,9 +20,11 @@ const menuTag = reactive([
     { name: '沉淀', index: '/littleGame' },
 ])
 const activeIndex = ref('1')
-// const handleSelect = (key) => {
-//     router.push(key);
-// }
+menuTag.forEach(item => {
+    if (item.index === route.path) {
+        activeIndex.value = item.index;
+    }
+})
 const goTo = (key) => {
     router.push(key);
 }
@@ -46,7 +46,7 @@ const addArticle = () => {
         <el-container>
             <el-header>
                 <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false">
-                    <el-menu-item v-for="item in menuTag" :index="item.index" @click="goTo(item.index)">{{ item.name
+                    <el-menu-item v-for="item in menuTag" :index="item.index" :key="item.index" @click="goTo(item.index)">{{ item.name
                         }}</el-menu-item>
                     <el-sub-menu style="float: right;">
                         <template #title>

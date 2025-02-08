@@ -73,7 +73,7 @@ import { ElMessage } from 'element-plus';
 
 const ruleFormRef = ref(null)
 const submit = async (formEl) => {
-    if (valueHtml.value.indexOf('"') != -1) { 
+    if (valueHtml.value.indexOf("''") != -1) { 
         ElMessage.error('文章内容中有英文双引号')
         return
     }
@@ -94,7 +94,6 @@ const submit = async (formEl) => {
                 visible: 'all'
             }
             valueHtml.value = ''
-            console.log(data)
             addArticle(data).then(res => {
 
             })
@@ -107,7 +106,6 @@ const submit = async (formEl) => {
 
 // 编辑器实例，必须用 shallowRef，重要！
 const editorRef = shallowRef();
-
 // 内容 HTML
 const valueHtml = ref('');
 
@@ -134,36 +132,6 @@ const goBack = () => {
     router.push('/forum');
 }
 
-/**
- *  @onChange="handleChange"
- *  @onDestroyed="handleDestroyed" @onFocus="handleFocus" @onBlur="handleBlur" @customAlert="customAlert"
- *  @customPaste="customPaste"
- */
-// const handleChange = (editor) => {
-//     console.log('change:', editor.getHtml());
-// };
-// const handleDestroyed = (editor) => {
-//     console.log('destroyed', editor);
-// };
-// const handleFocus = (editor) => {
-//     console.log('focus', editor);
-// };
-// const handleBlur = (editor) => {
-//     console.log('blur', editor);
-// };
-// const customAlert = (info, type) => {
-//     alert(`【自定义提示】${type} - ${info}`);
-// };
-// const customPaste = (editor, event, callback) => {
-//     console.log('ClipboardEvent 粘贴事件对象', event);
-
-//     // 自定义插入内容
-//     editor.insertText('xxx');
-
-//     // 返回值（注意，vue 事件的返回值，不能用 return）
-//     callback(false); // 返回 false ，阻止默认粘贴行为
-//     // callback(true) // 返回 true ，继续默认的粘贴行为
-// };
 
 
 </script>

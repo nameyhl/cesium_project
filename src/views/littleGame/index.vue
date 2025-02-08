@@ -58,8 +58,6 @@ const addBox = (doc) => {
     if (gameOver.value) {
         gameOver.value = false
     }
-    console.log(doc);
-    
     let div = document.createElement('div')
     div.className = 'ball'
     doc.appendChild(div)
@@ -79,8 +77,6 @@ const addBox = (doc) => {
         addCount()
         // 删除点击的盒子
         div.remove()
-        console.log(div);
-        
         addBox(gameBox.value)
     })
 }
@@ -90,7 +86,6 @@ const addBox = (doc) => {
 let count = ref(0)
 const addCount = () => {
     count.value += 10
-    console.log(count.value);
 }
 onMounted(() => {
 

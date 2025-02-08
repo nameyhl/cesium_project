@@ -107,7 +107,6 @@ const getClassifyList = () => {
             });
         });
         tableData.value = res.data
-        console.log(tableData.value);
 
     })
 }
@@ -126,7 +125,6 @@ const operate = (row, operate) => {
             });
             break
         case 'update':
-            console.log('update');
             dialogVisible.value = true
             getClassifyWithoutParentList()
             classify.value = row
@@ -181,9 +179,7 @@ const submitForm = () => {
             name: classify.value.name,
             parentId: selectValue.value,
         }
-        console.log(data);
         updateClassify(data).then(res => {
-            console.log(res);
             dialogVisible.value = false
             getClassifyList()
         })
@@ -197,9 +193,7 @@ const submitForm = () => {
             name: classify.value.name,
             parentId: selectValue.value,
         }
-        console.log(data);
         addClassify(data).then(res => {
-            console.log(res);
             dialogVisible.value = false
             getClassifyList()
         })

@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 
 // 引入xfAPI方法
-import { getReply } from '@/api/XFAI';
+import { getReply, deepSeekAI } from '@/api/XFAI';
 // 引入存放记录的方法
 import { setChat, getChat, getChatPage } from '@/api/chat'
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -39,18 +39,34 @@ const sendQuestion = () => {
             content: content
         }
         questionAndAnswer.push(obj)
-        getReply(data).then(res => {
-            let request = {
-                sendUserId: userId,
-                question: content,
-                answer: res.data
-            }
-            // 清空历史数据
-            historyData.splice(0, historyData.length)
-            getHistroy()
-            setChat(request)
-            showAnwser(res.data)
-        })
+        if (classAI.value == 2) {
+            getReply(data).then(res => {
+                let request = {
+                    sendUserId: userId,
+                    question: content,
+                    answer: res.data
+                }
+                // 清空历史数据
+                historyData.splice(0, historyData.length)
+                getHistroy()
+                setChat(request)
+                showAnwser(res.data)
+            })
+        }
+        if (classAI.value == 1) {
+            deepSeekAI(data).then(res => {
+                let request = {
+                    sendUserId: userId,
+                    question: content,
+                    answer: res.data
+                }
+                // 清空历史数据
+                historyData.splice(0, historyData.length)
+                getHistroy()
+                setChat(request)
+                showAnwser(res.data)
+            })
+        }
     } else {
         ElMessage.error('请输入问题');
         disabled.value = false
@@ -126,7 +142,6 @@ const getChatByPage = () => {
             item.createTime = item.createTime.substring(0, 10)
         })
         tableData.push(...res.data)
-        console.log(tableData);
         total.value = res.total
     })
 }
@@ -143,7 +158,6 @@ const handleCurrentChange = (val) => {
 
 // 表格行点击后
 const rowClick = (row) => {
-    console.log(row)
 }
 const handleClose = () => {
     msgBox.value = false
@@ -154,6 +168,12 @@ const columns = [
     { label: '问题', prop: 'question' },
     { label: '回答', prop: 'answer' },
     { label: '时间', prop: 'createTime' }
+]
+
+// 选择AI模型（讯飞星火/deepseek）
+const classAI = ref(2)
+const classOptions = [
+    { label: '讯飞星火', value: 2 },
 ]
 </script>
 <template>
@@ -194,13 +214,24 @@ const columns = [
                         </div>
                         <div class="anwser" id="anwser" :ref="anwserBox"></div>
                         <div class="question">
-                            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入内容"
-                                v-model="question">
-                            </el-input>
-                            <div class="submit">
-                                <el-button type="primary" @click="sendQuestion" :disabled="disabled"
-                                    :loading="loading">发送</el-button>
-                            </div>
+                            <el-row :gutter="10" style="align-items: center;">
+                                <el-col :span="5">
+                                    <el-select v-model="classAI">
+                                        <el-option v-for="item in classOptions" :key="item.value" :value="item.value"
+                                            :label="item.label" />
+                                    </el-select>
+                                </el-col>
+                                <el-col :span="17"><el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }"
+                                        placeholder="请输入内容" v-model="question">
+                                    </el-input>
+                                </el-col>
+                                <el-col :span="2">
+                                    <div class="submit">
+                                        <el-button type="primary" @click="sendQuestion" :disabled="disabled"
+                                            :loading="loading">发送</el-button>
+                                    </div>
+                                </el-col>
+                            </el-row>
                         </div>
                     </div>
                 </div>
@@ -208,7 +239,7 @@ const columns = [
         </el-row>
         <el-dialog v-model="msgBox" title="历史记录" width="1000" :before-close="handleClose">
             <myTable :columns="columns" :tableData="tableData" :rowClick="rowClick" :isOperate="true" :isDetail="true"
-                :isUpdate="false" :isDelete="false" :operateWidth="80"  />
+                :isUpdate="false" :isDelete="false" :operateWidth="80" />
             <el-pagination v-model:current-page="page" v-model:page-size="pageSize" :page-sizes="[5, 10, 15, 20]"
                 :size="'small'" layout="total, sizes, prev, pager, next, jumper" :total="total"
                 @size-change="handleSizeChange" @current-change="handleCurrentChange" />
@@ -350,11 +381,7 @@ const columns = [
                 width: 600px;
             }
 
-            .submit {
-                position: absolute;
-                top: 10px;
-                right: 5px
-            }
+
         }
 
     }

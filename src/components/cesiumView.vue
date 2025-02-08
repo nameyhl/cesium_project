@@ -1,6 +1,5 @@
 <script setup>
 import * as Cesium from "cesium";
-// console.log(Cesium);
 import { onMounted } from "vue"
 onMounted(() => {
   Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0NzFiMDc5Ni05YjE2LTQ2YWYtYmJlMi1mNzRhYWM5ZGY2ZGUiLCJpZCI6MjU2NzIxLCJpYXQiOjE3MzIxNTI4OTZ9.WTGHaY16gaELJeBQbjcL7fSbd21wUWvzZkTbG9D-uqw"
@@ -30,20 +29,15 @@ onMounted(() => {
   const cartesian1 = Cesium.Cartesian3.fromDegrees(110, 20, 20)
   const cartesian2 = Cesium.Cartesian3.fromDegrees(130, 20, 20)
 
-  // console.log(cartesian1);//经纬度高度
-  // console.log(cartesian2);
   //笛卡尔坐标转经纬度
   //1.笛卡尔坐转弧度坐标
   let cartographic = Cesium.Cartographic.fromCartesian(cartesian1)
   //2.弧度转角度坐标
   let lon = Cesium.Math.toDegrees(cartographic.longitude)
   let lat = Cesium.Math.toDegrees(cartographic.latitude)
-  // console.log("lon:",lon,"lat:",lat);
 
   // let lon = 180 / Math.PI * cartographic.longitude
   // let lat = 180 / Math.PI * cartographic.latitude
-  // console.log("cartographic:",cartographic);
-  // console.log("long:",lon,"lat:",lat);
 
   //相机  默认位置是在（0，-90，0）
   const position = new Cesium.Cartesian3.fromDegrees(110, 20, 20000)

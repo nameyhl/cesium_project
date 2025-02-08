@@ -188,11 +188,8 @@ let frend = ref('');
 
 const getFriend = async () => {
     let userId = userStore.id;
-    console.log(userId);
     await getFriendList({ userId: userId }).then(res => {
         frendList.value = res.data;
-        console.log(frendList.value);
-        
     })
 
 }

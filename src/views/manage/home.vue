@@ -3,9 +3,9 @@
  * 管理界面主界面
  */
 import { ref } from 'vue'
-import { RouterView } from 'vue-router';
-import { useRouter } from 'vue-router';
+import { RouterView, useRouter, useRoute } from 'vue-router';
 const router = useRouter()
+const route = useRoute()
 
 let menu = ref([
   {
@@ -16,11 +16,20 @@ let menu = ref([
   {
     name: '文章管理',
     icon: 'article',
-    index: '/article'
+    index: '/manage/articel'
   }
 ])
 
-let menuName = ref('分类管理')
+let menuName = ref('')
+
+// 判断当前路由，以确定是哪个页面
+const defaultMenu = ref('')
+menu.value.forEach(item => {
+  if (item.index === route.path) {
+    menuName.value = item.name
+    defaultMenu.value = route.path
+  }
+})
 
 const handleSelect = (index) => {
   menuName.value = menu.value.find(el => el.index === index).name
@@ -37,7 +46,7 @@ const logOut = () => {
     <el-aside>
       <div class="menu">
         <div class="menuTitle">菜单栏</div>
-        <el-menu default-active="2" class="el-menu-vertical-demo" @select="handleSelect">
+        <el-menu :default-active="defaultMenu" class="el-menu-vertical-demo" @select="handleSelect">
           <el-menu-item v-for="item in menu" :index="item.index" :key="item">
             <template #title>{{ item.name }}</template>
           </el-menu-item>

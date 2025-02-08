@@ -67,7 +67,6 @@ import { updateUser } from '../../api/user/index'
 
 // 提交修改
 const submit = () => {
-    console.log(form.value);
     updateUser(form.value);
     arterRemove()
 }

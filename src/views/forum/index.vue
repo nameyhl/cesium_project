@@ -33,6 +33,7 @@ const toDetail = (id, type) => {
     switch (type) {
         case 'articel':
             router.push({ path: '/articel', query: { id: id } })
+            
             break;
         case 'author':
             // 阻止事件冒泡

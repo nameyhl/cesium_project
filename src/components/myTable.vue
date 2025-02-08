@@ -95,10 +95,8 @@ const props = defineProps({
 })
 
 const columns = props.columns;
-console.log(columns);
 
 const tableData = props.tableData;
-console.log(tableData);
 
 let dialogVisible = ref(false);
 let dialogTitle = ref('');
@@ -109,10 +107,8 @@ const openDialog = (row, about) => {
         dialogTitle.value = row.question;
         dialogBody.value = row.answer;
     } else if (about == 'delete') {
-        console.log(row);
         return;
     } else if (about == 'update') {
-        console.log(row);
         return;
     }
 }

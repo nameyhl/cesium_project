@@ -10,11 +10,6 @@ const routes = [
     component: () => import("../home.vue"),
     children: [
       {
-        name: "earth",
-        path: "/earth",
-        component: () => import("@/components/cesiumView.vue"),
-      },
-      {
         name: "home",
         path: "/home",
         component: () => import("@/views/home/index.vue"),
@@ -96,6 +91,11 @@ const routes = [
         path: "/manage/classify",
         component: () => import("@/views/manage/classify/index.vue"),
       },
+      {
+        name: "manageArticel",
+        path: "/manage/articel",
+        component: () => import("@/views/manage/articel/index.vue"),
+      },
     ],
   },
 ];
@@ -117,6 +117,7 @@ router.beforeEach((to, from, next) => {
   } else {
     const userInfo = localStorage.getItem("userInfo");
     const token = userInfo ? JSON.parse(userInfo).token : "";
+    console.log(token);
     if (token) {
       next();
     } else {

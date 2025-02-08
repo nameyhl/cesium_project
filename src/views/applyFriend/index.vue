@@ -102,7 +102,6 @@ let tableData = ref([]);
 const searchUser = () => {
     let data = form.value
     getUerByInfo(data).then(res => {
-        console.log(res.data);
         tableData.value = res.data;
         tableData.value.forEach(item => {
             item.role = item.role == "admin" ? '管理员' : '普通用户';
@@ -116,14 +115,12 @@ const searchUser = () => {
 let dialogVisible = ref(false);
 let submitData = ref({})
 const handleClick = (row) => {
-    console.log(row)
     const data = {
         userId: userId,
         applyId: row.id
     }
     submitData.value = row;
     dialogVisible.value = true;
-    console.log(data);
 }
 let reason = ref('')
 // 提交申请
@@ -137,7 +134,6 @@ const submitApply = async () => {
         reason: reason.value
     }
     await addApplyFriend(obj).then(res => {
-        console.log(res.data);
         if (res.code == "200") {
             ElMessage.success('提交申请成功，等待用户添加');
         } else {
@@ -147,7 +143,6 @@ const submitApply = async () => {
     dialogVisible.value = false;
     myApplyData.value = [];
     await getMyApplyList({ userId: userId }).then(res => {
-        console.log(res.data);
         myApplyData.value = res.data;
         for (let i = 0; i < applyMeData.value.length; i++) {
             applyMeData.value[i].role = applyMeData.value[i].role == "admin" ? '管理员' : '普通用户';
@@ -173,8 +168,6 @@ getApplyFriendList({ userId: userId }).then(res => {
 // 获取该账号申请列表
 let myApplyData = ref([]);
 getMyApplyList({ userId: userId }).then(res => {
-    console.log(res.data);
-    
     myApplyData.value = res.data;
     for (let i = 0; i < myApplyData.value.length; i++) {
         myApplyData.value[i].role = myApplyData.value[i].role == "admin" ? '管理员' : '普通用户';
@@ -189,7 +182,6 @@ const updateApplyFriendState = (data) => {
         if (res.data == "success") {
             myApplyData.value = [];
             getMyApplyList({ userId: userId }).then(res => {
-                console.log(res.data);
                 myApplyData.value = res.data;
                 for (let i = 0; i < applyMeData.value.length; i++) {
                     applyMeData.value[i].role = applyMeData.value[i].role == "admin" ? '管理员' : '普通用户';

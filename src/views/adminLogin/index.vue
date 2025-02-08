@@ -39,8 +39,8 @@ let login = async (formEl) => {
       adminLogin(data).then(res => {
         if (res.code === 200) {
           let user = res.data;
-          console.log(user);
           // user.role = user.role == "admin" ? '管理员' : '普通用户';
+          localStorage.setItem('userInfo', JSON.stringify(user));
           // pinia存储用户信息
           userStore.setToken(user.token);
           userStore.setUsername(user.userName);
